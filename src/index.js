@@ -36,7 +36,7 @@ async function hendlerLoadMore() {
             if (page > totalPages) {
                 Notiflix.Notify.failure(
                     "We're sorry, but you've reached the end of search results.", {
-                    timeout: 4000,
+                    timeout: 2000,
                     width: '400px'
                 });
             }
@@ -54,7 +54,7 @@ async function hendlerSearch(evt) {
 // selectors.btnLoadMore.classList.remove('is-hidden');
     if (query === '') {
         Notify.failure('Enter your request, please!', {
-            timeout: 4000,
+            timeout: 2000,
             width: '400px'
         });
         return;
@@ -80,7 +80,7 @@ function checkIfEndOfPage() {
         .then(data => {
             if (data.totalHits === 0) {
                 Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.', {
-                    timeout: 4000,
+                    timeout: 2000,
                     width: '400px'
                 }
                 );
@@ -88,7 +88,7 @@ function checkIfEndOfPage() {
                 createMarkup(data.hits);
                 simpleLightBox = new SimpleLightbox('.gallery a').refresh();
                 Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`, {
-                    timeout: 4000,
+                    timeout: 2000,
                     width: '400px'
                 });
             }
