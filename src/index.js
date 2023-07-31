@@ -25,7 +25,7 @@ selectors.btnLoadMore.addEventListener('click', hendlerLoadMore);
 
 async function hendlerLoadMore() {
     page += 1;
-    simpleLightBox.destroy();
+    // simpleLightBox.destroy();
 
     fetchPhotos(query, page, perPage)
         .then(data => {
@@ -68,9 +68,9 @@ function checkIfEndOfPage() {
     );
 }
 
-    window.addEventListener('scroll', showLoadMorePage);
+    window.addEventListener('scroll', showLoadMore);
 
-    function showLoadMorePage() {
+    function showLoadMore() {
     if (checkIfEndOfPage()) {
     hendlerLoadMore();
     }
