@@ -1,6 +1,122 @@
 
+body {
+    font-family: var(--primary-font);
+    color: var(--primary-text-color);
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.input{
+    width: 20%;
+    height: 40px;
+    border: 1px solid rgba(33, 33, 33, 0.2);
+    border-radius: 4px;
+
+    margin-left: 30px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    font-size: 20px;
+    color: #8E8F99;
+    outline: none;
+    background-color: transparent;
+}
+
+.submit-btn {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    background:rgba(118, 93, 93, 0.2);
+    color: #1c1c20;
+    
+    padding: 8px 32px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.submit-btn:hover,
+.submit-btn:focus {
+    background-color: rgba(120, 49, 49, 0.2);
+}
+
+.gallery{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    gap: 20px
+}
+
+.load-more{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    background: rgba(118, 93, 93, 0.2);
+    color: #1c1c20;
+
+    padding: 8px 32px;
+    margin-top: 20px;
+    margin-left: 30px;
+    border: none;
+    border-radius: 4px;
+}
+
+.gallery__link {
+    min-width: 320px;
+    flex-basis: calc((100% - 60px) / 4);
+    border: none;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.gallery__link:hover,
+.gallery__link:focus {
+    transform: scale(1.05);
+}
+
+.gallery-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.gallery-item__img {
+    display: block;
+    height: 30vh;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+.info {
+    padding: 10px;
+    justify-content: space-around;
+}
+
+.info-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: rgb(152, 67, 67);
+        font-size: smaller;
+    }
 
 
 .is-hidden {

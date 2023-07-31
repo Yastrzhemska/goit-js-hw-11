@@ -4,9 +4,6 @@ import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './styles.css';
-// import { createMarkup } from './markup';
-
-
 
 
 const selectors = {
@@ -26,38 +23,58 @@ selectors.btnLoadMore.classList.add('is-hidden');
 selectors.form.addEventListener('submit', hendlerSearch);
 selectors.btnLoadMore.addEventListener('click', hendlerLoadMore);
 
+async function hendlerLoadMore() {
+    page += 1;
+    simpleLightBox.destroy();
+
+    fetchPhotos(query, page, perPage)
+        .then(data => {
+            createMarkup(data.hits);
+            simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+
+            const totalPages = Math.ceil(data.totalHits / perPage);
+            if (page > totalPages) {
+                Notiflix.Notify.failure(
+                    "We're sorry, but you've reached the end of search results.", {
+                    timeout: 4000,
+                    width: '400px'
+                });
+            }
+        })
+        .catch(err => console.log(err));
+
+}
+
 async function hendlerSearch(evt) {
     evt.preventDefault();
     page = 1;
-    selectors.btnLoadMore.classList.remove('is-hidden');
+    
     query = evt.currentTarget.elements.searchQuery.value.trim();
     selectors.gallery.innerHTML = '';
-
+// selectors.btnLoadMore.classList.remove('is-hidden');
     if (query === '') {
         Notify.failure('Enter your request, please!', {
             timeout: 4000,
             width: '400px'
         });
         return;
+        
     }
 
-    function hendlerLoadMore() {
-    
+function checkIfEndOfPage() {
+    return (
+    window.innerHeight + window.pageYOffset >=
+    document.documentElement.scrollHeight
+    );
 }
 
-// async function hendlerLoadMore() {
-//   const searchString = selectors.form.searchQuery.value.split(' ').join('+');
-//   page += 1;
-//   const images = await fetchPhotos(searchString, page);
-//   selectors.gallery.insertAdjacentHTML('beforeend', await createMarkup(images.hits));
-//   lightbox.refresh();
-//   refs.pgnum.textContent = `Page ${page}`;
-//   if (page >= 13) {
-//     console.log('page= ', page);
-//     refs.btnMore.style.display = 'none';
-//     Notify.info("We're sorry, but you've reached the end of search results.", optNotiflx);
-//   }
-// }
+    window.addEventListener('scroll', showLoadMorePage);
+
+    function showLoadMorePage() {
+    if (checkIfEndOfPage()) {
+    hendlerLoadMore();
+    }
+    }
     
     fetchPhotos(query, page, perPage)
         .then(data => {
@@ -95,11 +112,6 @@ console.log(fetchPhotos());
 // ---------------------------Створення розмітки
 
 function createMarkup(images) {
-    // Перевірка чи існує галерея перед вставкою даних
-    // if (!gallery) {
-    //     return;
-    // }
-
     const markup = images
         .map(image => {
             const {
