@@ -30,7 +30,7 @@ async function hendlerLoadMore() {
     fetchPhotos(query, page, perPage)
         .then(data => {
             createMarkup(data.hits);
-            simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+            new SimpleLightbox('.gallery a').refresh();
 
             const totalPages = Math.ceil(data.totalHits / perPage);
             if (page > totalPages) {
@@ -86,7 +86,7 @@ function checkIfEndOfPage() {
                 );
             } else {
                 createMarkup(data.hits);
-                simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+                new SimpleLightbox('.gallery a').refresh();
                 Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`, {
                     timeout: 2000,
                     width: '400px'
