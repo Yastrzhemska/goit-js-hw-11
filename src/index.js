@@ -85,6 +85,7 @@ async function hendlerSearch(evt) {
     fetchPhotos(query, page, perPage)
         .then(data => {
             if (data.totalHits === 0) {
+                selectors.btnLoadMore.classList.add('is-hidden');
                 Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.', {
                     timeout: 2000,
                     width: '400px'
