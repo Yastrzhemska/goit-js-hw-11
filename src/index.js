@@ -1,5 +1,6 @@
 import Notiflix from 'notiflix';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+// import SimpleLightbox from 'simplelightbox';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './styles.css';
@@ -20,15 +21,11 @@ selectors.btnLoadMore.addEventListener('click', hendlerLoadMore);
 
 async function hendlerLoadMore() {
     page += 1;
-    // simpleLightBox.destroy();
 
     fetchPhotos(query, page, perPage)
         .then(data => {
             createMarkup(data.hits);
-            new SimpleLightbox('.img_wrap a', { 
-                captionsData: 'alt',
-                captionDelay: 250,
-    }).refresh();
+            new SimpleLightbox('.gallery a').refresh();
 
             const totalPages = Math.ceil(data.totalHits / perPage);
             if (page === totalPages) {
@@ -41,10 +38,7 @@ async function hendlerLoadMore() {
                 selectors.btnLoadMore.removeEventListener('click', hendlerLoadMore);
                 window.removeEventListener('scroll', showLoadMore);
             }
-            new SimpleLightbox('.img_wrap a', { 
-                captionsData: 'alt',
-                captionDelay: 250,
-    }).refresh();
+            new SimpleLightbox('.gallery a').refresh();
         })
         .catch(err => console.log(err));
 
@@ -92,16 +86,13 @@ async function hendlerSearch(evt) {
                 }
                 );
             } else {
-                // new SimpleLightbox('.gallery a').refresh();
+                new SimpleLightbox('.gallery a').refresh();
                 Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`, {
                     timeout: 2000,
                     width: '400px'
                 });
                 createMarkup(data.hits);
-                new SimpleLightbox('.img_wrap a', { 
-                captionsData: 'alt',
-                captionDelay: 250,
-    }).refresh();
+                new SimpleLightbox('.gallery a').refresh();
             }
             if (data.totalHits > perPage) {
                 selectors.btnLoadMore.classList.remove('is-hidden');
@@ -114,48 +105,3 @@ async function hendlerSearch(evt) {
     
     
 }
-
-// ---------------------------Пошук зображень
-
-// async function fetchPhotos(query, page, perPage) {
-//     const BASE_URL = "https://pixabay.com/api/";
-//     const API_KEY = "38546715-4d682c7e02fe616ff7ac9c25a";
-//     const URL = `${BASE_URL}?key=${API_KEY}&q=${query}&page=${page}&per_page=${perPage}&image_type=photo&orientation=horizontal&safesearch=true`;
-    
-//     const response = await axios.get(URL);
-//     return response.data;    
-// }
-// // console.log(fetchPhotos());
-
-// ---------------------------Створення розмітки
-
-// function createMarkup(images) {
-//     const markup = images
-//         .map(image => {
-//             const {
-//                 id,
-//                 largeImageURL,
-//                 webformatURL,
-//                 tags,
-//                 likes,
-//                 views,
-//                 comments,
-//                 downloads,
-//             } = image;
-//             return `
-//         <a class="gallery__link" href="${largeImageURL}">
-//         <div class="gallery-item" id="${id}">
-//             <img class="gallery-item__img" src="${webformatURL}" alt="${tags}" loading="lazy" />
-//             <div class="info">
-//             <p class="info-item"><b>Likes</b>${likes}</p>
-//             <p class="info-item"><b>Views</b>${views}</p>
-//             <p class="info-item"><b>Comments</b>${comments}</p>
-//             <p class="info-item"><b>Downloads</b>${downloads}</p>
-//             </div>
-//         </div>
-//         </a>`;
-//         })
-//         .join('');
-
-//     selectors.gallery.insertAdjacentHTML('beforeend', markup);
-// }
