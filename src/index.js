@@ -107,13 +107,6 @@ async function hendlerSearch(evt) {
     
 }
 
-// function onFetchError() {
-//     Notify.failure('Oops! Something went wrong! Try reloading the page or make another choice!', {
-//                     timeout: 2000,
-//                     width: '400px'
-//                 });
-// };
-
 // ---------------------------Пошук зображень
 
 async function fetchPhotos(query, page, perPage) {
