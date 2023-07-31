@@ -11,7 +11,7 @@ const selectors = {
     gallery: document.querySelector('.gallery'),
     btnLoadMore: document.querySelector('.load-more')
 }
-console.log(selectors);
+// console.log(selectors);
 
 
 let page = 1; 
@@ -33,25 +33,45 @@ async function hendlerLoadMore() {
             new SimpleLightbox('.gallery a').refresh();
 
             const totalPages = Math.ceil(data.totalHits / perPage);
-            if (page > totalPages) {
+            if (page === totalPages) {
+                selectors.btnLoadMore.classList.add('is-hidden');
                 Notiflix.Notify.failure(
                     "We're sorry, but you've reached the end of search results.", {
                     timeout: 2000,
                     width: '400px'
                 });
+                selectors.btnLoadMore.removeEventListener('click', hendlerLoadMore);
+                window.removeEventListener('scroll', showLoadMore);
             }
+            new SimpleLightbox('.gallery a').refresh();
         })
         .catch(err => console.log(err));
 
 }
+
+
+function showLoadMore() {
+    if (checkIfEndOfPage()) {
+    hendlerLoadMore();
+    }
+}
+    
+function checkIfEndOfPage() {
+    return (
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight
+    );
+}
+
+    window.addEventListener('scroll', showLoadMore);
+
+
 
 async function hendlerSearch(evt) {
     evt.preventDefault();
     page = 1;
     
     query = evt.currentTarget.elements.searchQuery.value.trim();
-    selectors.gallery.innerHTML = '';
-// selectors.btnLoadMore.classList.remove('is-hidden');
     if (query === '') {
         Notify.failure('Enter your request, please!', {
             timeout: 2000,
@@ -61,21 +81,6 @@ async function hendlerSearch(evt) {
         
     }
 
-function checkIfEndOfPage() {
-    return (
-    window.innerHeight + window.pageYOffset >=
-    document.documentElement.scrollHeight
-    );
-}
-
-    window.addEventListener('scroll', showLoadMore);
-
-    function showLoadMore() {
-    if (checkIfEndOfPage()) {
-    hendlerLoadMore();
-    }
-    }
-    
     fetchPhotos(query, page, perPage)
         .then(data => {
             if (data.totalHits === 0) {
@@ -85,17 +90,29 @@ function checkIfEndOfPage() {
                 }
                 );
             } else {
-                createMarkup(data.hits);
-                new SimpleLightbox('.gallery a').refresh();
+                // new SimpleLightbox('.gallery a').refresh();
                 Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`, {
                     timeout: 2000,
                     width: '400px'
                 });
+                createMarkup(data.hits);
+                new SimpleLightbox('.gallery a').refresh();
+            }
+            if (data.totalHits > perPage) {
+                selectors.btnLoadMore.classList.remove('is-hidden');
+                window.addEventListener('scroll', showLoadMore);
             }
         })
-        .catch(err => console.log(err))
-        .finally(() => { selectors.form.reset()});
+        .catch(err => console.log(err));
+    
 }
+
+// function onFetchError() {
+//     Notify.failure('Oops! Something went wrong! Try reloading the page or make another choice!', {
+//                     timeout: 2000,
+//                     width: '400px'
+//                 });
+// };
 
 // ---------------------------Пошук зображень
 
@@ -107,7 +124,7 @@ async function fetchPhotos(query, page, perPage) {
     const response = await axios.get(URL);
     return response.data;    
 }
-console.log(fetchPhotos());
+// console.log(fetchPhotos());
 
 // ---------------------------Створення розмітки
 
